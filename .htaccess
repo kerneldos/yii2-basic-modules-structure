@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteRule ^$ web/
+RewriteRule ^(.*)$ web/$1
