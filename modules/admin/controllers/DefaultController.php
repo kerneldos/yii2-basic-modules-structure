@@ -2,19 +2,18 @@
 
 namespace app\modules\admin\controllers;
 
+use app\components\AppController;
 use app\components\generators\module\Generator;
 use app\models\Module;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\FileHelper;
-use yii\helpers\VarDumper;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
  * Default controller for the `admin` module
  */
-class DefaultController extends Controller
+class DefaultController extends AppController
 {
     /**
      * {@inheritdoc}
