@@ -39,14 +39,20 @@ The minimum requirement by this project template that your Web server supports P
 INSTALLATION
 ------------
 
+### You can then install this project template using the following command:
+~~~
+composer create-project kerneldos/yii2-basic-modules-structure
+~~~
+
+### OR
+
 ### Clone the repository from github
 ~~~
-git clone https://github.com/kerneldos/yii2-basic-modules-structure.git yii2modules.loc
+git clone https://github.com/kerneldos/yii2-basic-modules-structure.git .
 ~~~
 
 ### Update composer components
 ~~~
-cd yii2modules.loc
 composer update
 ~~~
 
