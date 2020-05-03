@@ -2,7 +2,7 @@
 
 namespace app\modules\site\controllers\frontend;
 
-use app\components\AppController;
+use app\controllers\AppController;
 use app\modules\site\models\LoginForm;
 use app\modules\site\models\ContactForm;
 use Yii;

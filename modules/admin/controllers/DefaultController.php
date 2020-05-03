@@ -2,7 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
-use app\components\AppController;
+use app\controllers\AppController;
 use app\components\generators\module\Generator;
 use app\models\Module;
 use Yii;
@@ -120,6 +120,7 @@ class DefaultController extends AppController
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \yii\base\ErrorException
      */
     public function actionDelete($id)
     {
