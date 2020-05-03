@@ -40,9 +40,6 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-//        $modules = \app\models\Module::find()->indexBy('name')->asArray()->all();
-//        $this->setModules($modules);
-
         \Yii::configure($this, require __DIR__ . '/config/config.php');
     }
 }

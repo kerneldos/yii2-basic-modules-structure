@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\components;
+namespace app\controllers;
 
 
 use yii\web\BadRequestHttpException;
@@ -25,10 +25,11 @@ class AppController extends Controller
      */
     public function beforeAction($action) {
         $clearCacheKey = \Yii::$app->request->get('reset-cache');
+
         if (!empty($clearCacheKey)) {
             $this->cache->flush();
         }
-        
+
         return parent::beforeAction($action);
     }
 }

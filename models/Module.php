@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "module".
@@ -14,7 +14,7 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  */
-class Module extends \yii\db\ActiveRecord
+class Module extends ActiveRecord
 {
     /**
      * {@inheritdoc}

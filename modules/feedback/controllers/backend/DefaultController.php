@@ -2,12 +2,12 @@
 
 namespace app\modules\feedback\controllers\backend;
 
-use yii\web\Controller;
+use app\controllers\AppController;
 
 /**
  * Default controller for the `feedback` module
  */
-class DefaultController extends Controller
+class DefaultController extends AppController
 {
     /**
      * Renders the index view for the module

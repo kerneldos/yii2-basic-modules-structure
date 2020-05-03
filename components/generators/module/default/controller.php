@@ -12,12 +12,12 @@ echo "<?php\n";
 
 namespace app\modules\<?= $generator->moduleID ?>\controllers\<?= $template ?>;
 
-use yii\web\Controller;
+use app\controllers\AppController;
 
 /**
  * Default controller for the `<?= $generator->moduleID ?>` module
  */
-class DefaultController extends Controller
+class DefaultController extends AppController
 {
     /**
      * Renders the index view for the module
