@@ -6,7 +6,4 @@
 echo "<?php\n";
 ?>
 
-return [
-    'controllerNamespace' => 'app\modules\<?= $generator->moduleID ?>\controllers\<?= $template ?>',
-    'viewPath' => '@app/modules/<?= $generator->moduleID ?>/views/<?= $template ?>',
-];
+return [];

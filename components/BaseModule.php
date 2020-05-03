@@ -17,9 +17,12 @@ class BaseModule extends Module implements BootstrapInterface
     */
     public function __construct($id, $parent = null, $config = [])
     {
-        $config = ($parent->getUniqueId() == 'admin')
-            ? require $this->basePath . '/config/backend.php'
-            : require $this->basePath . '/config/frontend.php';
+        $arch = ($parent->getUniqueId() == 'admin') ? 'backend' : 'frontend';
+
+        $config = [
+            "controllerNamespace" => "app\\modules\\$id\\controllers\\$arch",
+            "viewPath" => "@app/modules/$id/views/$arch",
+        ];
 
         parent::__construct($id, $parent, $config);
     }

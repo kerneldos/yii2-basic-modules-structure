@@ -24,8 +24,10 @@ class CachedBehavior extends Behavior
     public function deleteCache()
     {
         //Удаление массива кэшированных элементов (виджеты, модели...)
-        foreach ($this->cache_id as $id) {
-            \Yii::$app->cache->delete($id);
+        if (is_array($this->cache_id)) {
+            foreach ($this->cache_id as $id) {
+                \Yii::$app->cache->delete($id);
+            }
         }
     }
 }
