@@ -58,12 +58,8 @@ class Generator extends \yii\gii\generators\module\Generator
                 'content'   => $this->render("view.php"),
             ],
             [
-                'path'      => $modulePath . '/config/backend.php',
-                'content'   => $this->render("config.php", ['template' => 'backend']),
-            ],
-            [
-                'path'      => $modulePath . '/config/frontend.php',
-                'content'   => $this->render("config.php", ['template' => 'frontend']),
+                'path'      => $modulePath . '/config/config.php',
+                'content'   => $this->render("config.php"),
             ],
         ];
 
