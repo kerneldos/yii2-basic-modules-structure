@@ -3,10 +3,15 @@
 namespace app\modules\post;
 
 
+use app\components\BaseModule;
+use app\modules\post\components\EventHandler;
+use yii\helpers\ArrayHelper;
+use yii\web\Application;
+
 /**
  * post module definition class
 */
-class Module extends \app\components\BaseModule
+class Module extends BaseModule
 {
     /**
      * Bootstrap method to be called during application bootstrap stage.
@@ -14,7 +19,9 @@ class Module extends \app\components\BaseModule
      */
     public function bootstrap($app)
     {
-        // TODO: Implement bootstrap() method.
+        $app->getUrlManager()->addRules([
+//            '<module>/<_a:view>/<id>' => '<module>/default/<_a>',
+        ], false);
     }
 
     /**
@@ -25,5 +32,17 @@ class Module extends \app\components\BaseModule
         parent::init();
 
         // custom initialization code goes here
+    }
+
+    public static function getEventHandlers()
+    {
+        return ArrayHelper::merge(parent::getEventHandlers(), [
+            BaseModule::EVENT_USER_AFTER_LOGIN => [
+                [EventHandler::class , 'userAfterLogin'],
+            ],
+            BaseModule::EVENT_USER_AFTER_SIGNUP => [
+                [EventHandler::class , 'userAfterSignup'],
+            ],
+        ]);
     }
 }

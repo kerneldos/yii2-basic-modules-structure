@@ -3,10 +3,15 @@
 namespace app\modules\site;
 
 
+use app\components\BaseModule;
+use app\modules\site\components\EventHandler;
+use yii\helpers\ArrayHelper;
+use yii\web\Application;
+
 /**
  * site module definition class
  */
-class Module extends \app\components\BaseModule
+class Module extends BaseModule
 {
     /**
      * Bootstrap method to be called during application bootstrap stage.
@@ -15,5 +20,14 @@ class Module extends \app\components\BaseModule
     public function bootstrap($app)
     {
         // TODO: Implement bootstrap() method.
+    }
+
+    public static function getEventHandlers()
+    {
+        return ArrayHelper::merge(parent::getEventHandlers(), [
+            BaseModule::EVENT_USER_AFTER_LOGIN => [
+                [EventHandler::class , 'userAfterLogin'],
+            ],
+        ]);
     }
 }

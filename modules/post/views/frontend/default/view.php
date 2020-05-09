@@ -5,15 +5,26 @@
  */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
+
+$query = $model::find()->select('updated_at')->where(['id' => $model->id]);
+
+$dependency = [
+    'class' => 'yii\caching\DbDependency',
+    'sql' => $query->createCommand()->getRawSql(),
+];
 
 ?>
 
-<div class="jumbotron">
-    <h1>Congratulations!</h1>
+<?php if ($this->beginCache(['post', $model->id], ['dependency' => $dependency])): ?>
 
-    <p class="lead"><?= $model->content ?></p>
-    <?php if (!empty(Yii::$app->request->referrer)): ?>
-        <p><?= Html::a('Go back', Yii::$app->request->referrer) ?></p>
-    <?php endif; ?>
-</div>
+    <div class="jumbotron">
+        <h1>Congratulations!</h1>
+
+        <p class="lead"><?= $model->content ?></p>
+        <?php if (!empty(Yii::$app->request->referrer)): ?>
+            <p><?= Html::a('Go back', Yii::$app->request->referrer) ?></p>
+        <?php endif; ?>
+    </div>
+
+    <?php $this->endCache(); ?>
+<?php endif; ?>

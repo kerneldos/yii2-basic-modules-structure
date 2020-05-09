@@ -28,7 +28,6 @@ class Module extends ActiveRecord
     {
         return [
             'yii\behaviors\TimestampBehavior',
-            'app\components\behaviors\CachedBehavior',
         ];
     }
 

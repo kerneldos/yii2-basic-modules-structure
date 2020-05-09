@@ -11,6 +11,7 @@ $config = [
     'bootstrap' => [
         'log',
         'app\components\ModuleManager',
+        'app\components\EventManager',
     ],
     'aliases' => [
         '@bower'    => '@vendor/bower-asset',
@@ -68,8 +69,8 @@ $config = [
                 'action' => yii\web\UrlNormalizer::ACTION_REDIRECT_TEMPORARY, // используем временный редирект вместо постоянного
             ],
             'rules' => [
-                ''                      => 'site/default/index',
-                '<action:login|logout>' => 'site/default/<action>',
+                ''                              => 'site/default/index',
+                '<action:signup|login|logout>'  => 'site/default/<action>',
 
                 [
                     'class' => 'yii\web\GroupUrlRule',

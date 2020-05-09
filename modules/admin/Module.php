@@ -2,14 +2,16 @@
 
 namespace app\modules\admin;
 
+use app\components\BaseModule;
 use app\components\exceptions\ForbiddenExceptions;
 
 /**
  * admin module definition class
  */
-class Module extends \yii\base\Module
+class Module extends BaseModule
 {
     public $homeUrl = 'admin';
+
     /**
      * {@inheritdoc}
      */
