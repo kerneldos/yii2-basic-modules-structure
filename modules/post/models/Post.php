@@ -8,6 +8,8 @@ namespace app\modules\post\models;
  *
  * @property int $id
  * @property string $content
+ * @property int $created_at [int(11)]
+ * @property int $updated_at [int(11)]
  */
 class Post extends \yii\db\ActiveRecord
 {
