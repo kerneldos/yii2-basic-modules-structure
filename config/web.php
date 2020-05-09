@@ -78,7 +78,11 @@ $config = [
                     'routePrefix' => 'admin',
                     'rules' => [
                         '' => 'default/index',
-                        '<_a:view|create|update|delete>' => 'default/<_a>',
+
+                        '<_a:create>'                   => 'default/<_a>',
+                        '<_a:view|update|delete>/<id>'  => 'default/<_a>',
+
+                        '<module>/<_a:view|update|delete>/<id>' => '<module>/default/<_a>',
 
                         '<module>'                          => '<module>/default/index',
                         '<module>/<controller>'             => '<module>/<controller>/index',
@@ -89,7 +93,7 @@ $config = [
 //                ['class' => 'app\components\RewriteRule'],
                 'site/contact' => 'site/default/contact',
 
-                '<module>/<_a:view|create|update|delete>/<id>' => '<module>/default/<_a>',
+                '<module>/<_a:view|update|delete>/<id>' => '<module>/default/<_a>',
 
                 '<module>'                          => '<module>/default/index',
                 '<module>/<controller>'             => '<module>/<controller>/index',

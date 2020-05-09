@@ -4,6 +4,7 @@ namespace app\modules\post\controllers\frontend;
 
 use app\controllers\AppController;
 
+use app\modules\post\models\Author;
 use app\modules\post\models\Post;
 use yii\caching\DbDependency;
 use yii\data\Pagination;
@@ -66,12 +67,22 @@ class DefaultController extends AppController
         ]);
     }
 
+    /**
+     * Renders the post view for the module
+     * @param integer $id
+     * @return string
+     */
     public function actionView($id)
     {
         $model = Post::findOne($id);
 
+        if (!\Yii::$app->user->isGuest) {
+            $author = Author::findOne(['user_id' => \Yii::$app->user->getId()]);
+        }
+
         return $this->render('view', [
             'model' => $model,
+            'author' => !empty($author) ? $author : null,
         ]);
     }
 }

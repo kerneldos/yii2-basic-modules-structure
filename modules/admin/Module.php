@@ -2,13 +2,12 @@
 
 namespace app\modules\admin;
 
-use app\components\BaseModule;
 use app\components\exceptions\ForbiddenExceptions;
 
 /**
  * admin module definition class
  */
-class Module extends BaseModule
+class Module extends \yii\base\Module
 {
     public $homeUrl = 'admin';
 
@@ -43,5 +42,9 @@ class Module extends BaseModule
         parent::init();
 
         \Yii::configure($this, require __DIR__ . '/config/config.php');
+    }
+
+    public static function getEventHandlers() {
+        return [];
     }
 }
