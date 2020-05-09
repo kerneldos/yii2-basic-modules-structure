@@ -2,6 +2,7 @@
 /**
  * @var $model app\modules\post\models\Post
  * @var $this yii\web\View
+ * @var \app\modules\post\models\Author|null $author
  */
 
 use yii\helpers\Html;
@@ -21,6 +22,9 @@ $dependency = [
         <h1>Congratulations!</h1>
 
         <p class="lead"><?= $model->content ?></p>
+        <?php if (!empty($author)): ?>
+            <h2><?= $author->user->username ?></h2>
+        <?php endif; ?>
         <?php if (!empty(Yii::$app->request->referrer)): ?>
             <p><?= Html::a('Go back', Yii::$app->request->referrer) ?></p>
         <?php endif; ?>
