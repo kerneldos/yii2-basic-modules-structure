@@ -3,11 +3,11 @@
 namespace app\modules\site\controllers\frontend;
 
 use app\components\BaseModule;
-use app\modules\site\models\SignupForm;
 use Yii;
 use yii\web\Response;
 use app\controllers\AppController;
 
+use app\modules\site\models\SignupForm;
 use app\modules\site\models\LoginForm;
 use app\modules\site\models\ContactForm;
 use app\modules\site\events\UserEvent;

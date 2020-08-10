@@ -10,8 +10,8 @@ use yii\base\Module;
 
 class BaseModule extends Module implements BootstrapInterface
 {
-    const EVENT_USER_AFTER_LOGIN = 'userAfterLogin'; // Событие, общее для всех модулей
-    const EVENT_USER_AFTER_SIGNUP = 'userAfterSignup'; // Событие, общее для всех модулей
+    const EVENT_USER_AFTER_LOGIN = 'userAfterLogin';
+    const EVENT_USER_AFTER_SIGNUP = 'userAfterSignup';
 
     /**
      * @param string $id name

@@ -16,7 +16,7 @@ $dependency = [
 
 ?>
 
-<?php if ($this->beginCache(['post', $model->id], ['dependency' => $dependency])): ?>
+<?php if ($this->beginCache('post' . $model->id, ['dependency' => $dependency])): ?>
 
     <div class="jumbotron">
         <h1>Congratulations!</h1>
