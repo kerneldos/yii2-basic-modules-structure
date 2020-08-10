@@ -21,11 +21,11 @@ class ModuleManager extends Component implements BootstrapInterface
             ->asArray()
             ->all();
 
-        Yii::$app->setModules($modules);
+        $app->setModules($modules);
         foreach ($modules as $name => $module) {
-            Yii::$app->getModule($name)->bootstrap(Yii::$app);
+            $app->getModule($name)->bootstrap($app);
         }
 
-        Yii::$app->getModule('admin')->setModules($modules);
+        $app->getModule('admin')->setModules($modules);
     }
 }

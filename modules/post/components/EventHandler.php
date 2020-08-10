@@ -19,11 +19,16 @@ class EventHandler extends Component {
 
     /**
      * @param UserEvent $event
+     * @throws \Exception
      */
     public static function userAfterSignup($event) {
         $author = new Author();
-
         $author->link('user', $event->user);
+
+        $authManager = \Yii::$app->getAuthManager();
+
+        $role = $authManager->getRole('user');
+        $authManager->assign($role, $author->user_id);
     }
 
 }
