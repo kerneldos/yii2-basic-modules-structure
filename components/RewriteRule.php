@@ -43,7 +43,8 @@ class RewriteRule extends BaseObject implements UrlRuleInterface
      */
     public function createUrl($manager, $route, $params)
     {
-        $url = $route . '?' . http_build_query($params);
+        $url = $route;
+        !empty($params) && $url .=  '?' . http_build_query($params);
 
         return $url;
     }
