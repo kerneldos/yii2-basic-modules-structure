@@ -14,33 +14,28 @@ class RbacController extends Controller
 {
     public function actionInit()
     {
-        $auth = Yii::$app->getAuthManager();
-        $auth->removeAll();
+        $auth = Yii::$app->authManager;
 
-        $admin = Yii::$app->authManager->createRole('admin');
-        $admin->description = 'Администратор';
-        Yii::$app->authManager->add($admin);
+        // добавляем разрешение "createMessage"
+        $createMessage = $auth->createPermission('createMessage');
+        $createMessage->description = 'Create a Message';
+        $auth->add($createMessage);
 
-        $user = Yii::$app->authManager->createRole('user');
-        $user->description = 'Пользователь';
-        Yii::$app->authManager->add($user);
+        // добавляем разрешение "updateMessage"
+        $updateMessage = $auth->createPermission('updateMessage');
+        $updateMessage->description = 'Update Message';
+        $auth->add($updateMessage);
 
-        $fl = Yii::$app->authManager->createRole('FL');
-        $fl->description = 'ФЛ';
-        Yii::$app->authManager->add($fl);
+        // добавляем роль "user" и даём роли разрешение "createMessage"
+        $user = $auth->createRole('user');
+        $auth->add($user);
+        $auth->addChild($user, $createMessage);
 
-        $ip = Yii::$app->authManager->createRole('IP');
-        $ip->description = 'ИП';
-        Yii::$app->authManager->add($ip);
-
-        $ul = Yii::$app->authManager->createRole('UL');
-        $ul->description = 'ЮЛ';
-        Yii::$app->authManager->add($ul);
-
-        $auth->addChild($user, $fl);
-        $auth->addChild($user, $ip);
-        $auth->addChild($user, $ul);
-
+        // добавляем роль "admin" и даём роли разрешение "updateMessage"
+        // а также все разрешения роли "user"
+        $admin = $auth->createRole('admin');
+        $auth->add($admin);
+        $auth->addChild($admin, $updateMessage);
         $auth->addChild($admin, $user);
 
         $this->stdout('Done!' . PHP_EOL);
@@ -80,6 +75,18 @@ class RbacController extends Controller
             $authManager->revoke($role, $user->id);
         }
         $this->stdout('Done!' . PHP_EOL);
+    }
+
+    public function actionAddAdminPerm() {
+        $auth = Yii::$app->authManager;
+
+        // добавляем разрешение "adminPanel"
+        $adminPanel = $auth->createPermission('adminPanel');
+        $adminPanel->description = 'Access to Admin Panel';
+        $auth->add($adminPanel);
+
+        $admin = $auth->getRole('admin');
+        $auth->addChild($admin, $adminPanel);
     }
 
     /**

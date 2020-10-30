@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $group
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -53,6 +54,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['group', 'integer'],
         ];
     }
 
@@ -90,6 +92,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function getId()
     {
         return $this->getPrimaryKey();
+    }
+
+    public function getIsAdmin() {
+        $role = \Yii::$app->authManager->getRolesByUser($this->getId());
+
+        return array_key_exists('admin', $role);
     }
 
     /**

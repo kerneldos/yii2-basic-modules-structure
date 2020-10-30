@@ -14,15 +14,11 @@ class AdminAsset extends AssetBundle
     public $sourcePath = '@app/modules/admin/web';
 
     public $css = [
-        'css/style.css',
     ];
 
     public $js = [
-        'js/script.js',
     ];
 
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
     ];
 }

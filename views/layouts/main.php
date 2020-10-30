@@ -39,8 +39,9 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            Yii::$app->user->can('adminPanel')
+                ? ['label' => 'Admin Panel', 'url' => ['/admin']]
+                : '',
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/login']]
             ) : (
@@ -52,7 +53,10 @@ AppAsset::register($this);
                 )
                 . Html::endForm()
                 . '</li>'
-            )
+            ),
+            Yii::$app->user->isGuest
+                ? ['label' => 'Sign Up', 'url' => ['/signup']]
+                : '',
         ],
     ]);
     NavBar::end();

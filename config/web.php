@@ -5,9 +5,10 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'app',
-    'name' => 'MyYii2App',
+    'name' => 'Yii2 Chat Application',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
+    'defaultRoute' => 'chat',
     'bootstrap' => [
         'log',
         'app\components\ModuleManager',
@@ -41,7 +42,7 @@ $config = [
             'loginUrl' => ['site/default/login'],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/default/error',
+            'errorAction' => 'chat/default/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -72,8 +73,8 @@ $config = [
                 'action' => yii\web\UrlNormalizer::ACTION_REDIRECT_TEMPORARY, // используем временный редирект вместо постоянного
             ],
             'rules' => [
-                ''                              => 'site/default/index',
-                '<action:signup|login|logout>'  => 'site/default/<action>',
+                ''                              => 'chat/default/index',
+                '<action:signup|login|logout>'  => 'chat/default/<action>',
 
                 [
                     'class' => 'yii\web\GroupUrlRule',
@@ -92,9 +93,6 @@ $config = [
                         '<module>/<controller>/<action>'    => '<module>/<controller>/<action>',
                     ],
                 ],
-
-//                ['class' => 'app\components\RewriteRule'],
-                'site/contact' => 'site/default/contact',
 
                 '<module>/<_a:view|update|delete>/<id>' => '<module>/default/<_a>',
 
@@ -123,9 +121,6 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        'generators' => [
-            'extModule' => ['class' => 'app\components\generators\module\Generator'],
-        ],
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];

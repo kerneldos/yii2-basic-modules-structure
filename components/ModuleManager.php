@@ -4,7 +4,6 @@
 namespace app\components;
 
 use Yii;
-use app\models\Module;
 use yii\base\Component;
 use yii\base\BootstrapInterface;
 
@@ -15,11 +14,9 @@ class ModuleManager extends Component implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $modules = Module::find()
-            ->where(['status' => true])
-            ->indexBy('name')
-            ->asArray()
-            ->all();
+        $modules = [
+            'chat' => 'app\modules\chat\Module',
+        ];
 
         $app->setModules($modules);
         foreach ($modules as $name => $module) {

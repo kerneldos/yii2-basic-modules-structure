@@ -3,10 +3,11 @@
 namespace app\modules\admin\controllers;
 
 use app\controllers\AppController;
-use app\components\generators\module\Generator;
-use app\models\Module;
+use app\models\User;
 use Yii;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 
@@ -36,12 +37,27 @@ class DefaultController extends AppController
      */
     public function actionIndex()
     {
+        $users = User::find()->indexBy('id')->all();
+
+        if (Model::loadMultiple($users, Yii::$app->request->post()) && Model::validateMultiple($users)) {
+            foreach ($users as $user) {
+                $user->save(false);
+            }
+
+            return $this->refresh();
+        }
+
         $dataProvider = new ActiveDataProvider([
-            'query' => Module::find(),
+            'query' => User::find()->indexBy('id'),
         ]);
+
+        $authManager = Yii::$app->getAuthManager();
+
+        $roles = $authManager->getRoles();
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'roles' => array_reverse(ArrayHelper::getColumn($roles, 'name', false)),
         ]);
     }
 

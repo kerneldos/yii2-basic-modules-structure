@@ -2,7 +2,6 @@
 
 namespace app\modules\admin;
 
-use app\components\exceptions\ForbiddenExceptions;
 
 /**
  * admin module definition class
@@ -27,9 +26,6 @@ class Module extends \yii\base\Module
                         'roles' => ['admin'],
                     ],
                 ],
-//                'denyCallback' => function($rule, $action) {
-//                    throw new ForbiddenExceptions('Доступ запрещён!', 'Для данного типа пользователя - доступ запрещён!');
-//                }
             ],
         ];
     }
