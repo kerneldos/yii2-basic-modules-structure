@@ -1,31 +1,29 @@
 <?php
 return [
-    'admin' => [
-        'type' => 1,
-        'description' => 'Администратор',
-        'children' => [
-            'user',
-        ],
+    'createMessage' => [
+        'type' => 2,
+        'description' => 'Create a Message',
+    ],
+    'updateMessage' => [
+        'type' => 2,
+        'description' => 'Update Message',
     ],
     'user' => [
         'type' => 1,
-        'description' => 'Пользователь',
         'children' => [
-            'FL',
-            'IP',
-            'UL',
+            'createMessage',
         ],
     ],
-    'FL' => [
+    'admin' => [
         'type' => 1,
-        'description' => 'ФЛ',
+        'children' => [
+            'updateMessage',
+            'user',
+            'adminPanel',
+        ],
     ],
-    'IP' => [
-        'type' => 1,
-        'description' => 'ИП',
-    ],
-    'UL' => [
-        'type' => 1,
-        'description' => 'ЮЛ',
+    'adminPanel' => [
+        'type' => 2,
+        'description' => 'Access to Admin Panel',
     ],
 ];
