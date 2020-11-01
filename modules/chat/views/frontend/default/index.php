@@ -11,14 +11,14 @@ use yii\helpers\Url;
 
 <div class="chat-default-index">
     <?php foreach ($messages as $key => $message): ?>
-        <?php if ( (!$message->is_correct && Yii::$app->user->identity->isAdmin) || $message->is_correct ): ?>
+        <?php if ( (!$message->is_correct && Yii::$app->user->can('adminPanel')) || $message->is_correct ): ?>
             <div class="row message <?= $message->isAdminMessage ? 'admin' : '' ?> <?= !$message->is_correct ? 'incorrect' : '' ?>">
                 <div class="col-md-12">
                     <div class="row">
                         <p class="pull-left"><b><?= $message->user->username ?></b></p>
-                        <?php if (!$message->isAdminMessage): ?>
+                        <?php if (!$message->isAdminMessage && $message->is_correct && Yii::$app->user->can('adminPanel')): ?>
                             <p class="pull-right">
-                                <a href="<?= Url::to(['/chat/default/set-incorrect', 'id' => $message->id]) ?>">Пометить не корректным</a>
+                                <a href="<?= Url::to(['/chat/default/set-incorrect', 'id' => $message->id]) ?>">Пометить некорректным</a>
                             </p>
                         <?php endif; ?>
                     </div>
@@ -37,7 +37,7 @@ use yii\helpers\Url;
                 <div class="input-group">
                     <?= Html::activeInput('text', $model, 'text', ['class'=> 'form-control']) ?>
                     <span class="input-group-btn">
-                        <?= Html::submitButton('Send', ['class' => 'btn btn-success']) ?>
+                        <?= Html::submitButton('Send message', ['class' => 'btn btn-success']) ?>
                     </span>
                 </div>
 
