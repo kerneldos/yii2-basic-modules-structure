@@ -2,7 +2,7 @@
 
 namespace app\modules\chat\models;
 
-use Yii;
+use app\models\User;
 
 /**
  * This is the model class for table "message".
@@ -13,6 +13,8 @@ use Yii;
  * @property string $text
  * @property int $created_at
  * @property int $updated_at
+ * @property User $user
+ * @property bool $isAdminMessage
  */
 class Message extends \yii\db\ActiveRecord
 {
@@ -29,12 +31,6 @@ class Message extends \yii\db\ActiveRecord
         return [
             'yii\behaviors\TimestampBehavior',
         ];
-    }
-
-    public function init() {
-        parent::init();
-
-        $this->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->identity->getId() : 0;
     }
 
     public function getUser() {

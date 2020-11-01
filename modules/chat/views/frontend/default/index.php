@@ -1,5 +1,4 @@
 <?php
-use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 
@@ -32,16 +31,20 @@ use yii\helpers\Url;
     <?php if (Yii::$app->user->can('createMessage')): ?>
         <div class="row">
             <div class="col-md-12">
-                <?php $form = ActiveForm::begin(); ?>
+                <?= Html::beginForm() ?>
 
-                <div class="input-group">
-                    <?= Html::activeInput('text', $model, 'text', ['class'=> 'form-control']) ?>
-                    <span class="input-group-btn">
-                        <?= Html::submitButton('Send message', ['class' => 'btn btn-success']) ?>
-                    </span>
-                </div>
+                    <?= Html::activeHiddenInput($model, 'user_id', [
+                            'value' => Yii::$app->user->getId(),
+                    ]) ?>
 
-                <?php ActiveForm::end(); ?>
+                    <div class="input-group">
+                        <?= Html::activeInput('text', $model, 'text', ['class'=> 'form-control']) ?>
+                        <span class="input-group-btn">
+                            <?= Html::submitButton('Send message', ['class' => 'btn btn-success']) ?>
+                        </span>
+                    </div>
+
+                <?= Html::endForm() ?>
             </div>
         </div>
     <?php endif; ?>
