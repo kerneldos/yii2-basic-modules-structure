@@ -11,12 +11,12 @@ use yii\helpers\Url;
 
 <div class="chat-default-index">
     <?php foreach ($messages as $key => $message): ?>
-        <?php if ( (!$message->is_correct && Yii::$app->user->can('adminPanel')) || $message->is_correct ): ?>
+        <?php if ( (!$message->is_correct && Yii::$app->user->identity->isAdmin) || $message->is_correct ): ?>
             <div class="row message <?= $message->isAdminMessage ? 'admin' : '' ?> <?= !$message->is_correct ? 'incorrect' : '' ?>">
                 <div class="col-md-12">
                     <div class="row">
                         <p class="pull-left"><b><?= $message->user->username ?></b></p>
-                        <?php if (!$message->isAdminMessage && $message->is_correct && Yii::$app->user->can('adminPanel')): ?>
+                        <?php if (!$message->isAdminMessage && $message->is_correct && Yii::$app->user->identity->isAdmin): ?>
                             <p class="pull-right">
                                 <a href="<?= Url::to(['/chat/default/set-incorrect', 'id' => $message->id]) ?>">Пометить некорректным</a>
                             </p>

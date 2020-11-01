@@ -38,7 +38,9 @@ class DefaultController extends AppController
 
         if (Model::loadMultiple($users, Yii::$app->request->post()) && Model::validateMultiple($users)) {
             foreach ($users as $user) {
-                $user->save(false);
+                if ($user->isAttributeChanged('group', false)) {
+                    $user->save(false);
+                }
             }
 
             return $this->refresh();
