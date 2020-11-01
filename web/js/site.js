@@ -1,4 +1,10 @@
+/**
+ * Main Js file
+ */
+
 $(document).ready(function () {
+    "use strict"
+
     $('#show_password').on('click', function () {
         var $input = $(this).closest('div').find('input');
 

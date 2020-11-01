@@ -28,6 +28,9 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    const ROLE_ADMIN = 0;
+    const ROLE_USER = 1;
+
     /**
      * @inheritdoc
      */
@@ -94,12 +97,6 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
-    public function getIsAdmin() {
-        $role = \Yii::$app->authManager->getRolesByUser($this->getId());
-
-        return array_key_exists('admin', $role);
-    }
-
     /**
      * @inheritdoc
      */
@@ -147,19 +144,27 @@ class User extends ActiveRecord implements IdentityInterface
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
-    /**
-     * @param bool $insert
-     * @return bool
-     * @throws Exception
-     */
-    public function beforeSave($insert)
+    public static function getRolesList()
     {
-        if (parent::beforeSave($insert)) {
-            if ($this->isNewRecord) {
-                $this->generateAuthKey();
-            }
-            return true;
-        }
-        return false;
+        return [
+            self::ROLE_USER => 'User',
+            self::ROLE_ADMIN => 'Admin',
+        ];
+    }
+
+    /**
+     * Название роли
+     * @param int $id
+     * @return mixed|null
+     */
+    public function getRoleName($id)
+    {
+        $roles = self::getRolesList();
+
+        return !empty($roles[$id]) ? $roles[$id] : null;
+    }
+
+    public function getIsAdmin() {
+        return ($this->group === self::ROLE_ADMIN);
     }
 }
