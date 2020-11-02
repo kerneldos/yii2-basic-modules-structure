@@ -11,16 +11,14 @@ use yii\data\ActiveDataProvider;
 /**
  * Default controller for the `admin` module
  */
-class DefaultController extends AppController
-{
+class DefaultController extends AppController {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
-                'class' => 'yii\filters\VerbFilter',
+                'class'   => 'yii\filters\VerbFilter',
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -29,25 +27,25 @@ class DefaultController extends AppController
     }
 
     /**
-     * Lists all Module models.
      * @return mixed
+     * @throws \Exception
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
+        /** @var User[] $users */
         $users = User::find()->indexBy('id')->all();
 
-        if (Model::loadMultiple($users, Yii::$app->request->post()) && Model::validateMultiple($users)) {
-            foreach ($users as $id => $user) {
-                if ($user->isAttributeChanged('group', false)) {
+        if ( Model::loadMultiple($users, Yii::$app->request->post()) && Model::validateMultiple($users) ) {
+            foreach ($users as $userId => $user) {
+                if ( $user->isAttributeChanged('group', false) ) {
                     $user->save(false);
 
                     $authManager = Yii::$app->getAuthManager();
 
-                    $rolesList = User::getRolesList();
-                    $role = $authManager->getRole($rolesList[$user->group]);
+                    $roleName = User::getRoleName($user->group);
+                    $role     = $authManager->getRole($roleName);
 
-                    $authManager->revokeAll($id);
-                    $authManager->assign($role, $id);
+                    $authManager->revokeAll($userId);
+                    $authManager->assign($role, $userId);
                 }
             }
 
@@ -60,7 +58,7 @@ class DefaultController extends AppController
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'roles' => User::getRolesList(),
+            'roles'        => User::getRolesList(),
         ]);
     }
 }
