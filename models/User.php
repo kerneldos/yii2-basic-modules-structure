@@ -136,6 +136,9 @@ class User extends ActiveRecord implements IdentityInterface {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
+    /**
+     * @return string[]
+     */
     public static function getRolesList() {
         return [
             self::ROLE_USER  => 'user',
@@ -143,6 +146,19 @@ class User extends ActiveRecord implements IdentityInterface {
         ];
     }
 
+    /**
+     * @param integer $id
+     * @return string|null
+     */
+    public static function getRoleName($id) {
+        $list = static::getRolesList();
+
+        return !empty($list[$id]) ? $list[$id] : null;
+    }
+
+    /**
+     * @return bool
+     */
     public function getIsAdmin() {
         return ($this->group === self::ROLE_ADMIN);
     }

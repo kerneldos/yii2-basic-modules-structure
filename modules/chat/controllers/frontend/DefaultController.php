@@ -3,14 +3,13 @@
 namespace app\modules\chat\controllers\frontend;
 
 use app\components\BaseModule;
+use app\controllers\AppController;
+use app\modules\chat\events\UserEvent;
+use app\modules\chat\models\LoginForm;
 use app\modules\chat\models\Message;
+use app\modules\chat\models\SignupForm;
 use Yii;
 use yii\web\Response;
-use app\controllers\AppController;
-
-use app\modules\chat\models\SignupForm;
-use app\modules\chat\models\LoginForm;
-use app\modules\chat\events\UserEvent;
 
 /**
  * Default controller for the `chat` module
@@ -22,6 +21,21 @@ class DefaultController extends AppController
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
+
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'only' => ['set-incorrect'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
             ],
         ];
     }

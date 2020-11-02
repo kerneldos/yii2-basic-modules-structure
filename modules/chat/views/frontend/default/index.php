@@ -1,10 +1,12 @@
 <?php
+
+use app\modules\chat\models\Message;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 
 /**
- * @var \app\modules\chat\models\Message[] $messages
- * @var \app\modules\chat\models\Message $model
+ * @var Message[] $messages
+ * @var Message $model
  */
 ?>
 

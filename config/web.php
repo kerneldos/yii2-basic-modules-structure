@@ -39,7 +39,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['site/default/login'],
+            'loginUrl' => ['/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'chat/default/error',
