@@ -37,9 +37,17 @@ class DefaultController extends AppController
         $users = User::find()->indexBy('id')->all();
 
         if (Model::loadMultiple($users, Yii::$app->request->post()) && Model::validateMultiple($users)) {
-            foreach ($users as $user) {
+            foreach ($users as $id => $user) {
                 if ($user->isAttributeChanged('group', false)) {
                     $user->save(false);
+
+                    $authManager = Yii::$app->getAuthManager();
+
+                    $rolesList = User::getRolesList();
+                    $role = $authManager->getRole($rolesList[$user->group]);
+
+                    $authManager->revokeAll($id);
+                    $authManager->assign($role, $id);
                 }
             }
 
