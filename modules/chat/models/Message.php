@@ -50,6 +50,7 @@ class Message extends \yii\db\ActiveRecord
             [['user_id', 'text'], 'required'],
             [['user_id', 'is_correct', 'created_at', 'updated_at'], 'integer'],
             [['text'], 'string', 'max' => 255],
+//            ['text', 'filter', 'filter' => 'htmlspecialchars'],
         ];
     }
 

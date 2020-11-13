@@ -4,6 +4,7 @@
 namespace app\modules\chat\components;
 
 
+use app\models\User;
 use app\modules\chat\events\UserEvent;
 use yii\base\Component;
 
@@ -13,7 +14,10 @@ class EventHandler extends Component {
      * @param UserEvent $event
      */
     public static function userAfterLogin($event) {
-        \Yii::debug($event->user->email);
+        /** @var User $user */
+        $user = $event->sender->user->identity;
+
+        \Yii::debug($user);
     }
 
     /**
@@ -21,9 +25,10 @@ class EventHandler extends Component {
      * @throws \Exception
      */
     public static function userAfterSignup($event) {
-        $auth = \Yii::$app->authManager;
-        $authorRole = $auth->getRole('user');
-        $auth->assign($authorRole, $event->user->getId());
+        /** @var User $user */
+        $user = $event->sender->user->identity;
+
+        \Yii::debug($user->username . ' successful registered!');
     }
 
 }

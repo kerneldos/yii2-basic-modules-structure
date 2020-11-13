@@ -1,8 +1,7 @@
 <?php
 
-namespace app\modules\chat\models;
+namespace app\models;
 
-use app\models\User;
 use Yii;
 use yii\base\Model;
 

@@ -8,10 +8,8 @@ $config = [
     'name' => 'Yii2 Chat Application',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
-    'defaultRoute' => 'chat',
     'bootstrap' => [
         'log',
-        'app\components\ModuleManager',
         'app\components\EventManager',
     ],
     'aliases' => [
@@ -21,7 +19,20 @@ $config = [
     ],
     'modules' => [
         'admin' => [
-            'class' => 'app\modules\admin\Module',
+            'class' => 'kerneldos\admmodules\Module',
+
+//            'layoutPath' => '@app/views/layouts',
+//            'layout' => 'main',
+
+            'as Access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
         ],
     ],
     'components' => [
@@ -42,7 +53,7 @@ $config = [
             'loginUrl' => ['/login'],
         ],
         'errorHandler' => [
-            'errorAction' => 'chat/default/error',
+            'errorAction' => 'app/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -67,42 +78,19 @@ $config = [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'normalizer' => [
                 'class' => 'yii\web\UrlNormalizer',
                 'action' => yii\web\UrlNormalizer::ACTION_REDIRECT_TEMPORARY, // используем временный редирект вместо постоянного
             ],
             'rules' => [
-                ''                              => 'chat/default/index',
-                '<action:signup|login|logout>'  => 'chat/default/<action>',
-
-                [
-                    'class' => 'yii\web\GroupUrlRule',
-                    'prefix' => 'admin',
-                    'routePrefix' => 'admin',
-                    'rules' => [
-                        '' => 'default/index',
-
-                        '<_a:create>'                   => 'default/<_a>',
-                        '<_a:view|update|delete>/<id>'  => 'default/<_a>',
-
-                        '<module>/<_a:view|update|delete>/<id>' => '<module>/default/<_a>',
-
-                        '<module>'                          => '<module>/default/index',
-                        '<module>/<controller>'             => '<module>/<controller>/index',
-                        '<module>/<controller>/<action>'    => '<module>/<controller>/<action>',
-                    ],
-                ],
-
-                '<module>/<_a:view|update|delete>/<id>' => '<module>/default/<_a>',
-
-                '<module>'                          => '<module>/default/index',
-                '<module>/<controller>'             => '<module>/<controller>/index',
-                '<module>/<controller>/<action>'    => '<module>/<controller>/<action>',
+                '<action:signup|login|logout>'  => 'app/<action>',
             ],
         ],
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['admin', 'user'],
         ],
     ],
     'params' => $params,

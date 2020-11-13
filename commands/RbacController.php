@@ -16,6 +16,25 @@ class RbacController extends Controller
     {
         $auth = Yii::$app->authManager;
 
+        $rule = new \app\rbac\UserGroupRule;
+        $auth->add($rule);
+
+        $user = $auth->createRole('user');
+        $user->ruleName = $rule->name;
+        $auth->add($user);
+
+        $admin = $auth->createRole('admin');
+        $admin->ruleName = $rule->name;
+        $auth->add($admin);
+        $auth->addChild($admin, $user);
+
+        // добавляем разрешение "adminPanel"
+        $adminPanel = $auth->createPermission('adminPanel');
+        $adminPanel->description = 'Access to Admin Panel';
+        $auth->add($adminPanel);
+
+        $auth->addChild($admin, $adminPanel);
+
         // добавляем разрешение "createMessage"
         $createMessage = $auth->createPermission('createMessage');
         $createMessage->description = 'Create a Message';
@@ -27,16 +46,11 @@ class RbacController extends Controller
         $auth->add($updateMessage);
 
         // добавляем роль "user" и даём роли разрешение "createMessage"
-        $user = $auth->createRole('user');
-        $auth->add($user);
         $auth->addChild($user, $createMessage);
 
         // добавляем роль "admin" и даём роли разрешение "updateMessage"
         // а также все разрешения роли "user"
-        $admin = $auth->createRole('admin');
-        $auth->add($admin);
         $auth->addChild($admin, $updateMessage);
-        $auth->addChild($admin, $user);
 
         $this->stdout('Done!' . PHP_EOL);
     }
@@ -74,19 +88,8 @@ class RbacController extends Controller
             $role = $authManager->getRole($roleName);
             $authManager->revoke($role, $user->id);
         }
+
         $this->stdout('Done!' . PHP_EOL);
-    }
-
-    public function actionAddAdminPerm() {
-        $auth = Yii::$app->authManager;
-
-        // добавляем разрешение "adminPanel"
-        $adminPanel = $auth->createPermission('adminPanel');
-        $adminPanel->description = 'Access to Admin Panel';
-        $auth->add($adminPanel);
-
-        $admin = $auth->getRole('admin');
-        $auth->addChild($admin, $adminPanel);
     }
 
     /**

@@ -23,10 +23,12 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        '//unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js',
         'js/site.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
     ];
 }

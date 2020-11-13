@@ -20,6 +20,9 @@ class Module extends BaseModule
     public function bootstrap($app)
     {
         // TODO: Implement bootstrap() method.
+        $app->getUrlManager()->addRules([
+//            'test' => 'admin/default/index',
+        ], false);
     }
 
     public static function getEventHandlers()

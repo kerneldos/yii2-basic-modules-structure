@@ -16,4 +16,15 @@ $(document).ready(function () {
             $input.attr('type', 'password');
         }
     });
+
+    $('.messages-container').infiniteScroll({
+        path: '.next a',
+        append: '.item',
+        history: false,
+        hideNav: '.pagination',
+        status: '.scroller-status',
+        prefill: true,
+        // button: '.view-more-button',
+        scrollThreshold: 100,
+    });
 });
