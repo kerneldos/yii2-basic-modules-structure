@@ -2,28 +2,18 @@
 
 namespace app\modules\chat\controllers\frontend;
 
-use app\components\BaseModule;
-use app\controllers\AppController;
-use app\modules\chat\events\UserEvent;
-use app\modules\chat\models\LoginForm;
 use app\modules\chat\models\Message;
-use app\modules\chat\models\SignupForm;
 use Yii;
-use yii\web\Response;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
+use yii\web\Controller;
 
 /**
  * Default controller for the `chat` module
  */
-class DefaultController extends AppController
+class DefaultController extends Controller
 {
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
+    public $layout = 'main';
 
     public function behaviors() {
         return [
@@ -51,11 +41,26 @@ class DefaultController extends AppController
             return $this->goHome();
         }
 
-        $messages = Message::find()->with('user')->all();
+        $query = Message::find()->with('user')->orderBy(['created_at' => SORT_DESC]);
+        $countQuery = clone $query;
 
-        return $this->render('index', [
-            'messages' => $messages,
+        $pager = new Pagination([
+            'pageSize' => 5,
+            'defaultPageSize' => 5,
+            'totalCount' => $countQuery->count(),
+        ]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' =>  $query->offset($pager->offset)->limit($pager->limit),
+            'pagination' => false,
+        ]);
+
+        $render = 'render' . (Yii::$app->request->isAjax ? 'Partial' : '');
+
+        return $this->$render('index', [
+            'dataProvider' => $dataProvider,
             'model' => $model,
+            'pager' => $pager,
         ]);
     }
 
@@ -64,72 +69,6 @@ class DefaultController extends AppController
 
         $message->is_correct = 0;
         $message->save();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin() {
-
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            Yii::$app->trigger(BaseModule::EVENT_USER_AFTER_LOGIN, new UserEvent([
-                'user' => Yii::$app->user->identity,
-            ]));
-
-            return Yii::$app->user->identity->isAdmin
-                ? $this->redirect('/admin')
-                : $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     * @throws \yii\base\Exception
-     */
-    public function actionSignup() {
-        $model = new SignupForm();
-
-        if ($model->load(Yii::$app->request->post())) {
-            if (($user = $model->signup()) != false) {
-                Yii::$app->session->setFlash('success', 'Thank you for registration.');
-
-                Yii::$app->trigger(BaseModule::EVENT_USER_AFTER_SIGNUP, new UserEvent([
-                    'user' => $user,
-                ]));
-
-                return $this->goHome();
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout() {
-        Yii::$app->user->logout();
 
         return $this->goHome();
     }

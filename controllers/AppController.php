@@ -4,47 +4,85 @@
 namespace app\controllers;
 
 
+use app\components\BaseModule;
+use app\models\LoginForm;
+use app\models\SignupForm;
+use app\modules\chat\events\UserEvent;
 use Yii;
-use yii\caching\CacheInterface;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
+use yii\base\Event;
+use yii\web\Response;
 
-class AppController extends Controller
-{
+class AppController extends \yii\web\Controller {
     /**
-     * @var CacheInterface
+     * @return array|string[]
      */
-    public $cache;
-
-    /**
-     * AppController constructor.
-     * @param $id
-     * @param $module
-     * @param array $config
-     */
-    public function __construct($id, $module, $config = [])
-    {
-        parent::__construct($id, $module, $config);
-
-        $this->cache = Yii::$app->cache;
+    public function actions() {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
     }
 
     /**
-     * @param $action
-     * @return bool
-     * @throws BadRequestHttpException
+     * Login action.
+     *
+     * @return Response|string
      */
-    public function beforeAction($action) {
-        $clearCacheKey = Yii::$app->request->get('reset-cache');
+    public function actionLogin() {
 
-        if (!empty($clearCacheKey)) {
-            $this->cache->flush();
+        if ( !Yii::$app->user->isGuest ) {
+            return $this->goHome();
         }
 
-        if (!parent::beforeAction($action)) {
-            return false;
+        $model = new LoginForm();
+
+        if ( $model->load(Yii::$app->request->post()) && $model->login() ) {
+            Yii::$app->trigger(BaseModule::EVENT_USER_AFTER_LOGIN);
+
+            return Yii::$app->user->can('adminPanel') ? $this->redirect('/admin') : $this->goBack();
         }
 
-        return true;
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Signs user up.
+     *
+     * @return mixed
+     * @throws \yii\base\Exception
+     */
+    public function actionSignup() {
+        $model = new SignupForm();
+
+        if ( $model->load(Yii::$app->request->post()) ) {
+            if ( ($user = $model->signup()) != false ) {
+                Yii::$app->session->setFlash('success', 'Thank you for registration.');
+
+                Yii::$app->trigger(BaseModule::EVENT_USER_AFTER_SIGNUP, new UserEvent([
+                    'user' => $user,
+                ]));
+
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionLogout() {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 }
