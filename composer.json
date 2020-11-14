@@ -15,10 +15,11 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.6.0",
-        "yiisoft/yii2-app-basic": "~2.0.39"
+        "yiisoft/yii2-app-basic": "~2.0.39",
+        "kerneldos/yii2-admin-modules": "~v1.0.0"
     },
     "require-dev": {
-        "yiisoft/yii2-debug": "dev-master@dev",
+        "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-gii": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "codeception/codeception": "4.0.x-dev | ^4.0",
